@@ -1,7 +1,7 @@
 # reuben
 A discord bot written in Ruby.
 
-## Usage
+## Bot Setup
 You must have sqlite3 installed.
 
 1. Create a file at the root of the project called `secrets.yml` with the following text inside, `YOURAPITOKEN` is your secret Discord API token.
