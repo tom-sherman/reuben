@@ -16,13 +16,15 @@ CONFIG = YAML.load_file('secrets.yml')
 end
 
 @bot.command :rep do |event, arg|
-  count = @db.execute('SELECT COUNT(*) FROM reps WHERE receiver=?', [arg.tr('<>@', '')])[0][0]
-
+  arg_id = arg.tr('<>@', '')
+  # User is in the form of [user.id, User]
+  next "Whoops! I can't find user #{arg}" if @bot.users.find { |user| user[0].to_s == arg_id }.nil?
+  count = @db.execute('SELECT COUNT(*) FROM reps WHERE receiver=?', [arg_id])[0][0]
   "#{arg} has #{count} rep"
 end
 
-@bot.command :echo do |event, arg|
-  arg
+@bot.command :echo do |event, *args|
+  args.join(' ')
 end
 
 # Event handler for adding reputation, new thumbs up emoji = +1 rep
