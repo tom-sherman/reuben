@@ -16,11 +16,10 @@ CONFIG = YAML.load_file('secrets.yml')
 end
 
 @bot.command :rep do |event, arg|
-  arg_id = arg.tr('<>@', '')
-  # User is in the form of [user.id, User]
-  next "Whoops! I can't find user #{arg}" if @bot.users.find { |user| user[0].to_s == arg_id }.nil?
-  count = @db.execute('SELECT COUNT(*) FROM reps WHERE receiver=?', [arg_id])[0][0]
-  "#{arg} has #{count} rep"
+  user = event.message.mentions[0]
+  next "Whoops! I can't find user #{arg}" unless @bot.user(user.id)
+  count = @db.execute('SELECT COUNT(*) FROM reps WHERE receiver=?', [user.id])[0][0]
+  "#{user.mention} has #{count} rep"
 end
 
 @bot.command :echo do |event, *args|
